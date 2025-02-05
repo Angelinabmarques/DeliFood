@@ -1,0 +1,45 @@
+CREATE DATABASE DeliFood;
+USE DeliFood;
+CREATE TABLE Bebidas (
+    id_bebida INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL,
+    tamanho VARCHAR(50),
+    disponibilidade BOOLEAN DEFAULT TRUE
+);
+INSERT INTO Bebidas (nome, descricao, preco, tamanho, disponibilidade)
+VALUES 
+('Coca-Cola', 'Refrigerante clássico', 5.50, 'Lata 350ml', TRUE),
+('Guaraná Antártica', 'Refrigerante de guaraná', 5.80, 'Lata 350ml', TRUE),
+('Cajuina', 'Refrigerante de caju', 5.80, 'Lata 350ml', TRUE),
+('Suco de Laranja', 'Suco natural de laranja', 6.00, 'Copo 500ml', TRUE),
+('Suco de Caju', 'Suco natural de caju', 7.00, 'Copo 500ml', TRUE),
+('Suco de Maracujá', 'Suco natural de maracujá', 6.00, 'Copo 500ml', TRUE),
+('Água Mineral', 'Água sem gás', 2.00, 'Copo 300ml', TRUE);
+
+UPDATE Bebidas
+SET disponibilidade = 100
+WHERE nome = 'Água Mineral';
+
+-- Tabela de Comidas
+CREATE TABLE Comidas (
+    id_comida INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL,
+    categoria ENUM('Pizza', 'Lanche', 'Japonesa', 'Brasileira', 'Vegana', 'Outros') NOT NULL,
+    disponibilidade BOOLEAN DEFAULT TRUE
+);
+INSERT INTO Comidas (nome, descricao, preco, categoria, disponibilidade)
+VALUES 
+('Pizza Marguerita', 'Pizza com molho de tomate, queijo e manjericão', 30.00, 'Pizza', TRUE),
+('Hambúrguer com Queijo', 'Hambúrguer artesanal com queijo cheddar', 18.50, 'Lanche', TRUE),
+('Sushi de Salmão', 'Comida japonesa com arroz, peixe e alga', 40.00, 'Japonesa', TRUE),
+('Feijoada', 'Prato tradicional brasileiro com feijão, arroz e carnes', 35.00, 'Brasileira', TRUE),
+('Hambúrguer Vegano', 'Hambúrguer feito de vegetais e grãos', 22.00, 'Vegana', TRUE),
+('Frango Frito', 'Frango empanado frito', 25.00, 'Outros', TRUE);
+
+UPDATE comidas 
+SET disponibilidade = 100
+WHERE nome = 'Frango Frito';
