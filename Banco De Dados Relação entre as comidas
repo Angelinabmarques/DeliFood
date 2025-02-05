@@ -1,4 +1,3 @@
--- Tabela de Itens do Pedido (Relaciona pedidos com bebidas, comidas e sobremesas)
 CREATE TABLE ItensPedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pedido_id INT,
