@@ -1,0 +1,31 @@
+
+CREATE TABLE Sobremesas (
+    id_sobremesa INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL,
+    disponibilidade BOOLEAN DEFAULT TRUE
+);
+INSERT INTO Sobremesas (nome, descricao, preco, disponibilidade)
+VALUES
+('Torta de Limão', 'Torta com creme de limão e base de biscoito', 12.00, TRUE),
+('Brownie de Chocolate', 'Brownie de chocolate com pedaços de nozes', 10.00, TRUE),
+('Pudim de Leite', 'Pudim tradicional de leite condensado', 8.00, TRUE),
+('Sorvete de Creme', 'Sorvete cremoso de baunilha', 6.50, TRUE);
+
+
+
+CREATE TABLE Pedidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_nome VARCHAR(100) NOT NULL,
+    endereco TEXT NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    status ENUM('Pendente', 'Em preparo', 'Saiu para entrega', 'Entregue', 'Cancelado') DEFAULT 'Pendente',
+    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO Pedidos (cliente_nome, endereco, telefone, status, data_pedido)
+VALUES
+('João Silva', 'Rua das Flores, 123', '11987654321', 'Pendente', NOW()),
+('Maria Oliveira', 'Avenida Central, 456', '21976543210', 'Em preparo', NOW()),
+('Pedro Costa', 'Rua do Sol, 789', '31965432109', 'Saiu para entrega', NOW()),
+('Ana Souza', 'Praça do Mercado, 101', '41987654321', 'Entregue', NOW());
