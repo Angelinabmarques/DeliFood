@@ -1,0 +1,21 @@
+-- Tabela de Itens do Pedido (Relaciona pedidos com bebidas, comidas e sobremesas)
+CREATE TABLE ItensPedido (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT,
+    tipo ENUM('Bebida', 'Comida', 'Sobremesa') NOT NULL,
+    item_id INT NOT NULL,
+    quantidade INT NOT NULL CHECK (quantidade > 0),
+    preco DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (pedido_id) REFERENCES Pedidos(id) ON DELETE CASCADE
+);
+INSERT INTO ItensPedido (pedido_id, tipo, item_id, quantidade, preco)
+VALUES
+(1, 'Comida', 1, 1, 30.00),   -- Pizza Marguerita
+(1, 'Bebida', 1, 2, 5.50),    -- Coca-Cola
+(1, 'Sobremesa', 1, 1, 12.00), -- Torta de Limão
+(2, 'Comida', 2, 1, 18.50),   -- Hambúrguer com Queijo
+(2, 'Bebida', 2, 1, 6.00),    -- Suco de Laranja
+(3, 'Comida', 3, 2, 40.00),   -- Sushi de Salmão
+(3, 'Bebida', 3, 1, 2.00),    -- Água Mineral
+(4, 'Comida', 4, 1, 35.00),   -- Feijoada
+(4, 'Sobremesa', 2, 1, 10.00); -- Brownie de Chocolate
