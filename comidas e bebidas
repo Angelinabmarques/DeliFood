@@ -1,5 +1,6 @@
 CREATE DATABASE DeliFood;
 USE DeliFood;
+
 CREATE TABLE Bebidas (
     id_bebida INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -22,7 +23,6 @@ UPDATE Bebidas
 SET disponibilidade = 100
 WHERE nome = 'Água Mineral';
 
--- Tabela de Comidas
 CREATE TABLE Comidas (
     id_comida INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
