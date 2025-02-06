@@ -1,0 +1,63 @@
+CREATE DATABASE DeliFood;
+USE DeliFood;
+
+CREATE TABLE usuarios (
+id_usuarios INT AUTO_INCREMENT PRIMARY KEY ,
+email VARCHAR (100) UNIQUE NOT NULL,
+senha VARCHAR (100) NOT NULL
+);
+
+CREATE TABLE produtos (
+id_produtos INT AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR (50),
+categoria VARCHAR (50),
+preco DOUBLE, 
+descricao TEXT,
+disponibilidade INT 
+);
+
+
+INSERT INTO produtos (nome, categoria ,  preco, descricao, disponibilidade)
+VALUES 
+('Pizza Marguerita', 'Salgado', 33.00, 'Pizza com molho de tomate, queijo e manjericão', 100),
+('Pizza Mussarela ', 'Salgado', 30.00, 'mussarela, rodelas de tomate e orégano',  100),
+('Pizza Calabresa  ', 'Salgado', 28.00, 'mussarela, linguiça calabresa e cebola', 100),
+('Pizza Napolitana ', 'Salgado', 36.00, 'mussarela, rodelas de tomate, queijo parmesão e orégano',  100),
+('Pizza Lombinho ', 'Salgado', 35.00, 'mussarela, lombo defumado e cebola',  100),
+('Pizza Pepperoni ', 'Salgado', 30.00, 'mussarela, pepperoni e cebola',  100),
+('Pizza Frango com Catupiry ','Salgado', 32.00, 'molho de tomate, mussarela, frango e catupiry',  100),
+('Pizza Bolonhesa ', 'Salgado', 31.00, 'mussarela, molho a bolonhesa e orégano',  100),
+('Pizza Carne Seca ', 'Salgado', 27.00, 'Carne seca, mussarela, cebola, parmesão e orégano', 100),
+('Pastel ', 'Salgado', 7.00, 'Massa fininha e crocante, recheada com carne, queijo ou frango', 100),
+('Coxinha ', 'Salgado', 5.00, 'Recheada com frango desfiado e envolta em massa crocante', 100),
+('Empada ', 'Salgado', 4.00, 'Massa folhada recheada com frango, camarão ou palmito.', 100),
+('Enroladinho de Presunto e Queijo ', 'Salgado', 4.00, 'Massa folhada recheada com presunto e queijo', 100),
+('Esfiha ', 'Salgado', 7.00, 'Massa aberta recheada com carne, frango ou queijo', 100),
+('Pão de Queijo ', 'Salgado', 2.00, 'Pãozinho macio e levemente crocante, recheado com queijo', 100),
+('Torta de Chocolate', 'Sobremesa', 34.00 , 'Massa crocante com recheio cremoso de chocolate meio amargo', 100),
+('Pudim', 'Sobremesa', 26.00 , 'Sobremesa clássica de leite condensado, coberta com calda de caramelo', 100),
+('Mousse de Maracujá', 'Sobremesa', 8.00 ,'Sobremesa leve e aerada com sabor azedinho de maracujá', 100),
+('Brigadeiro Gourmet', 'Sobremesa', 5.00, 'Feito com chocolate belga e finalizado com granulado artesanal',100),
+('Sorvete de Frutas Tropicais', 'Sobremesa', 5.00, 'Sorvete refrescante de frutas como manga, maracujá e abacaxi.', 100),
+('Beijinho ', 'Sobremesa', 5.00, 'Doce de coco com leite condensado, coberto com açúcar cristal.', 100),
+('Torta de Morango com Chantilly', 'Sobremesa', 5.00, ' Massa de torta coberta com morangos frescos e chantilly.', 100),
+('Água', 'bebida', 5.00, ' Água mineral', 1000),
+('Água', 'bebida', 5.00, ' Água mineral com gás', 1000),
+('Água de coco', 'bebida', 5.00, ' Água natural de coco', 1000),
+('Guaraná Antártica', 'bebida', 8.00, '  Refrigerante de guaraná, 2 litros', 100),
+('Cajuína', 'bebida', 7.00, ' Refrigerante de caju, 2 litros', 100),
+('Coca-Cola', 'bebida', 9.00, ' Refrigerante de cola, 2 litros', 100),
+('Fanta laranja', 'bebida', 6.50, ' Refrigerante de laranja, 2 litros', 100),
+('Suco de Caju', 'bebida', 5.00, ' Suco natural de Caju', 100),
+('Suco de Laranja', 'bebida', 5.00, ' Suco natural de Laranja', 100),
+('Suco de Maracujá', 'bebida', 5.00, ' Suco natural de Maracujá', 100),
+('Suco de Melancia', 'bebida', 5.00, ' Suco natural de Melancia', 100),
+('Suco de Goiaba', 'bebida', 5.00, ' Suco natural de Goiaba', 100),
+('Café com Leite', 'bebida', 4.00, ' Café preto com leite em pó', 100),
+('Café', 'bebida', 3.00, ' Café preto', 100);
+
+
+
+
+SELECT* FROM produtos;
+SELECT* FROM usuarios;
