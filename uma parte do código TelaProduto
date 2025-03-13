@@ -1,0 +1,110 @@
+private void inserirProduto() {
+        
+        String nome = txtNome.getText();
+        String categoria = txtCategoria.getText();
+
+        try {
+            
+            double valor = Double.parseDouble(txtValor.getText());
+            int quantidade = Integer.parseInt(txtQuantidade.getText());
+
+            
+            ProdutoDTO novoProduto = new ProdutoDTO( nome, valor, quantidade, categoria);
+
+            
+            produtoDao.adicionarProduto(novoProduto);
+            JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso.");
+            limparCampos();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Formato de preço inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    
+    public void limparCampos() {
+        txtNome.setText(null);
+        txtValor.setText(null);
+        txtQuantidade.setText(null);
+        txtCategoria.setText(null);
+        txtNome.requestFocus();
+    }
+
+    
+    private void listarProduto() {
+        try {
+            List<ProdutoDTO> produtos = produtoDao.listarProdutos();
+            DefaultTableModel model = (DefaultTableModel) tbDados.getModel();
+            model.setNumRows(0);
+
+            
+            for (ProdutoDTO produto : produtos) {
+                Object[] rowData = {
+                    produto.getId(), produto.getNome(), produto.getValor(), produto.getQuantidade(),  produto.getCategoria()};
+                model.addRow(rowData);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os dados" + e.getMessage());
+        }
+
+    }
+
+    private void carregarCampos() {
+        int setar = tbDados.getSelectedRow();
+
+        txtNome.setText(tbDados.getModel().getValueAt(setar, 1).toString());
+        txtValor.setText(tbDados.getModel().getValueAt(setar, 2).toString());
+        txtQuantidade.setText(tbDados.getModel().getValueAt(setar, 3).toString());
+        txtCategoria.setText(tbDados.getModel().getValueAt(setar, 4).toString());
+
+    }
+
+    
+    private void alterarProduto() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int id = (int) tbDados.getValueAt(selectedRow, 0);
+            String nome = txtNome.getText();
+            String categoria = txtCategoria.getText();
+
+            try {
+                
+                double valor = Double.parseDouble(txtValor.getText());
+                int quantidade = Integer.parseInt(txtQuantidade.getText());
+
+                
+                ProdutoDTO produtoAtualizado = new ProdutoDTO(id, nome, valor, quantidade, categoria);
+
+                
+                produtoDao.atualizarProduto(produtoAtualizado);
+                JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso.");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Formato de preço inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um produto para atualizar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    private void excluirProduto() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int idprodutos = (int) tbDados.getValueAt(selectedRow, 0);
+            int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir este produto?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacao == JOptionPane.YES_OPTION) {
+                produtoDao.excluirProduto(idprodutos);
+                
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um produto para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
