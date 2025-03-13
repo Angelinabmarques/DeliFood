@@ -1,0 +1,99 @@
+import ifsertaope.cs.crud_exemplo.dto.FuncionarioDTO;
+import ifsertaope.cs.crud_exemplo.factory.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author clara
+ */
+public class FuncionarioDAO {
+
+    private final Connection connection;
+    public FuncionarioDAO() {
+        connection = ConnectionFactory.getConnection();
+    }
+
+    // Adicionar funcionário
+    public void adicionarFuncionario(FuncionarioDTO funcionario) {
+        try {
+            String query = "INSERT INTO funcionarios (nome, cpf, email, cargo, telefone, turno) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setString(1, funcionario.getNome());
+                pst.setString(2, funcionario.getCpf());
+                pst.setString(3, funcionario.getEmail());
+                pst.setString(4, funcionario.getCargo());
+                pst.setString(5, funcionario.getTelefone());
+                pst.setString(6, funcionario.getTurno());
+
+                pst.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao adicionar funcionário: " + e.getMessage());
+        }
+    }
+
+    // Listar funcionários
+    public List<FuncionarioDTO> listarFuncionarios() {
+        List<FuncionarioDTO> funcionarios = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM funcionarios";
+            try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(query)) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nome = rs.getString("nome");
+                    String cpf = rs.getString("cpf");
+                    String email = rs.getString("email");
+                    String cargo = rs.getString("cargo");
+                    String telefone = rs.getString("telefone");
+                    String turno = rs.getString("turno");
+
+                    FuncionarioDTO funcionario = new FuncionarioDTO(id, nome, cpf, email, cargo, telefone, turno);
+                    funcionarios.add(funcionario);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar funcionários: " + e.getMessage());
+        }
+        return funcionarios;
+    }
+
+    // Atualizar funcionário
+    public void atualizarFuncionario(FuncionarioDTO funcionario) {
+        try {
+            String query = "UPDATE funcionarios SET nome = ?, cpf = ?, email = ?, cargo = ?, telefone = ?, turno = ? WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, funcionario.getNome());
+                ps.setString(2, funcionario.getCpf());
+                ps.setString(3, funcionario.getEmail());
+                ps.setString(4, funcionario.getCargo());
+                ps.setString(5, funcionario.getTelefone());
+                ps.setString(6, funcionario.getTurno());
+                ps.setInt(7, funcionario.getId());
+
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar funcionário: " + e.getMessage());
+        }
+    }
+
+    // Excluir funcionário
+    public void excluirFuncionario(int idFuncionario) {
+        try {
+            String query = "DELETE FROM funcionarios WHERE id = ?";
+            try (PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setInt(1, idFuncionario);
+                pst.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir funcionário: " + e.getMessage());
+        }
+    }
+}
