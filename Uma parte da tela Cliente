@@ -1,0 +1,124 @@
+private void inserirCliente() {
+        // Dados inseridos pelo usuário no formulário.
+        String nome = Txtnome.getText();
+        String cpf = txtCpf.getText();
+        String email = TxtEmail.getText();
+        String telefone = txtTelefone.getText();
+        String endereco = txtEndereco.getText();
+        String cep = txtCep.getText();
+
+
+        try {
+            // Convertendo os dados inseridos no formulário.
+           
+            // Cria um novo objeto da classe ProdutoDTO
+            ClienteDTO novoCliente = new ClienteDTO( nome,cpf,email,telefone,endereco,cep );
+
+            // Inserir dados no banco através do método da Classe ProdutoDAO (adicionarProduto).
+            ClienteDao.adicionarCliente(novoCliente);
+            JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso.");
+            limparCampos();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Formato inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    // Função para limpar os campos JTextField
+    public void limparCampos() {
+        Txtnome.setText(null);
+        txtTelefone.setText(null);
+        txtEndereco.setText(null);
+        TxtEmail.setText(null);
+        txtCep.setText(null);
+        txtCpf.setText(null);
+        Txtnome.requestFocus();
+       
+    }
+
+    // Método para listar os produtos.
+    private void listarCliente() {
+        try {
+            List<ClienteDTO> clientes = ClienteDao.listarClientes();
+            DefaultTableModel model = (DefaultTableModel) tbDados.getModel();
+            model.setNumRows(0);
+
+            // Inserir os dados na Jtable
+            for (ClienteDTO cliente : clientes) {
+                Object[] rowData = {
+                    cliente.getId(), cliente.getNome(), cliente.getCpf(), cliente.getEmail(),  cliente.getTelefone(), cliente.getEndereco(), cliente.getCep()};
+                model.addRow(rowData);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os dados" + e.getMessage());
+        }
+
+    }
+
+    private void carregarCampos() {
+        int setar = tbDados.getSelectedRow();
+
+        Txtnome.setText(tbDados.getModel().getValueAt(setar, 1).toString());
+        txtCpf.setText(tbDados.getModel().getValueAt(setar, 2).toString());
+        txtEndereco.setText(tbDados.getModel().getValueAt(setar, 3).toString());
+        txtCep.setText(tbDados.getModel().getValueAt(setar, 4).toString());
+        txtTelefone.setText(tbDados.getModel().getValueAt(setar, 5).toString());
+        TxtEmail.setText(tbDados.getModel().getValueAt(setar, 6).toString());
+
+    }
+
+    //Obter os dados atualizados e atualizar o banco de dados.
+    private void alterarCliente() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int id = (int) tbDados.getValueAt(selectedRow, 0);
+            String nome = Txtnome.getText();
+            String cpf = txtCpf.getText();
+            String telefone = txtTelefone.getText();
+            String endereco = txtEndereco.getText();
+            String email = TxtEmail.getText();
+            String cep = txtCep.getText();
+
+            try {
+                // Recebendo e convertendo os dados inseridos no formulário.
+               
+
+                // Cria um novo objeto da classe ProdutoDTO
+                ClienteDTO clienteAtualizado = new ClienteDTO(id, nome, cpf, telefone, endereco, email, cep);
+
+                // Inserir dados no banco através do método da Classe ProdutoDAO (adicionarProduto).
+                ClienteDao.atualizarCliente(clienteAtualizado);
+                JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso.");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Formato de preço inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um produto para atualizar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    private void excluirCliente() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int idclientes = (int) tbDados.getValueAt(selectedRow, 0);
+            int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir este cliente?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacao == JOptionPane.YES_OPTION) {
+                ClienteDao.excluirCliente(idclientes);
+                //atualizarTabela();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um cliente para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+   
+}
