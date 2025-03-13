@@ -1,0 +1,92 @@
+import ifsertaope.cs.crud_exemplo.dto.VendedorDTO;
+import ifsertaope.cs.crud_exemplo.factory.ConnectionFactory;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+/**
+ *
+ * @author clara
+ */
+public class VendedorDAO {
+    private Connection connection;
+
+    public VendedorDAO() {
+        connection = ConnectionFactory.getConnection();
+    }
+
+    public void adicionarVendedor(VendedorDTO vendedor) {
+        String query = "INSERT INTO vendedores (nome, cpf, email, senha, telefone, endereco) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, vendedor.getNome());
+            pst.setString(2, vendedor.getCpf());
+            pst.setString(3, vendedor.getEmail());
+            pst.setString(4, vendedor.getSenha());
+            pst.setString(5, vendedor.getTelefone());
+            pst.setString(6, vendedor.getEndereco());
+
+            pst.executeUpdate(); // Executa a inserção no banco de dados
+        } catch (SQLException e) {
+            System.err.println("Erro ao adicionar vendedor: " + e.getMessage());
+        }
+    }
+
+    // Listar todos os vendedores
+    public List<VendedorDTO> listarVendedores() {
+        List<VendedorDTO> vendedores = new ArrayList<>();
+        String query = "SELECT * FROM vendedores";
+
+        try (Statement st = connection.createStatement()) {
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                int id = rs.getInt("idvendedores");
+                String nome = rs.getString("nome");
+                String cpf = rs.getString("cpf");
+                String email = rs.getString("email");
+                String senha = rs.getString("senha");
+                String telefone = rs.getString("telefone");
+                String endereco = rs.getString("endereco");
+
+                VendedorDTO vendedor = new VendedorDTO(id, nome, cpf, email, senha, telefone, endereco);
+                vendedores.add(vendedor);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar vendedores: " + e.getMessage());
+        }
+        return vendedores;
+    }
+
+    // Atualizar um vendedor
+    public void atualizarVendedor(VendedorDTO vendedor) {
+        String query = "UPDATE vendedores SET nome = ?, cpf = ?, email = ?, senha = ?, telefone = ?, endereco = ? WHERE idvendedores = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, vendedor.getNome());
+            pst.setString(2, vendedor.getCpf());
+            pst.setString(3, vendedor.getEmail());
+            pst.setString(4, vendedor.getSenha());
+            pst.setString(5, vendedor.getTelefone());
+            pst.setString(6, vendedor.getEndereco());
+            pst.setInt(7, vendedor.getId());
+
+            pst.executeUpdate(); // Executa a atualização no banco de dados
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar vendedor: " + e.getMessage());
+        }
+    }
+
+    // Excluir um vendedor
+    public void excluirVendedor(int idVendedor) {
+        String query = "DELETE FROM vendedores WHERE idvendedores = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, idVendedor);
+            pst.executeUpdate(); // Executa a exclusão no banco de dados
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir vendedor: " + e.getMessage());
+        }
+    }
+
+
+}
