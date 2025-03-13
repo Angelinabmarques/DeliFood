@@ -1,0 +1,114 @@
+public class ClienteDTO {
+
+    private int id;
+    private String nome;
+    private String cpf;
+    private String email;
+    private String telefone;
+    private String endereco;
+    private String cep;
+
+    // Construtor com todos os atributos, incluindo o ID
+    public ClienteDTO(int id, String nome, String cpf, String email, String telefone, String endereco, String cep) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.telefone = telefone;
+        this.endereco = endereco;
+        this.cep = cep;
+    }
+
+    // Construtor sem o ID, para criação de novos clientes
+    public ClienteDTO(String nome, String cpf, String email, String telefone, String endereco, String cep) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.telefone = telefone;
+        this.endereco = endereco;
+        this.cep = cep;
+    }
+
+    // Getters e Setters para todos os atributos
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ClienteDTO other = (ClienteDTO) obj;
+        return this.id == other.id;
+    }
+
+
+
+}
