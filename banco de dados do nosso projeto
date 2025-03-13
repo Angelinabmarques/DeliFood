@@ -1,0 +1,53 @@
+drop database if exists delifood;
+create database DeliFood;
+use DeliFood;
+
+
+CREATE TABLE produtos (
+    idprodutos INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    quantidade INT NOT NULL,
+    categoria varchar(255) not null 
+);
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+insert into usuarios (user, password) values ('admin', 'admin');
+
+CREATE TABLE clientes (
+    idclientes INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(15),
+    endereco VARCHAR(255),
+    cep VARCHAR(10),
+    CONSTRAINT UC_CPF UNIQUE (cpf)
+);
+
+
+CREATE TABLE vendedores (
+    idvendedores INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    telefone VARCHAR(15),
+    endereco VARCHAR(255),
+    CONSTRAINT UC_CPF_VENDEDOR UNIQUE (cpf)
+);
+
+CREATE TABLE funcionarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    cargo VARCHAR(50) NOT NULL,
+    telefone VARCHAR(15) NOT NULL,
+    turno VARCHAR(50) NOT NULL 
+);
