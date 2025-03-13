@@ -1,0 +1,120 @@
+private void inserirFuncionario() {
+        // Dados inseridos pelo usuário no formulário.
+        String nome = txtNome.getText();
+        String cpf = txtCPF.getText();
+        String email = txtEmail.getText();
+        String telefone = txtTelefone.getText();
+        String cargo = txtCargo.getText();
+        String turno = txtTurno.getText();
+
+        try {
+            // Convertendo os dados inseridos no formulário.
+           
+
+            // Cria um novo objeto da clsse ProdutoDTO
+            FuncionarioDTO novoFuncionario = new FuncionarioDTO(nome, cpf, email, telefone, cargo, turno);
+
+            // Inserir dados no banco através do método da Classe ProdutoDAO (adicionarProduto).
+            funcionarioDao.adicionarFuncionario(novoFuncionario);
+            JOptionPane.showMessageDialog(null, "Funcionario adicionado com sucesso.");
+            limparCampos();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Formato inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    // Função para limpar os campos JTextField
+    public void limparCampos() {
+        txtNome.setText(null);
+        txtCPF.setText(null);
+        txtEmail.setText(null);
+        txtTelefone.setText(null);
+        txtCargo.setText(null);
+        txtTurno.setText(null);
+        txtNome.requestFocus();
+    }
+
+    // Método para listar os produtos.
+    private void listarFuncionario() {
+        try {
+            List<FuncionarioDTO> funcionarios = funcionarioDao.listarFuncionarios();
+            DefaultTableModel model = (DefaultTableModel) tbDados.getModel();
+            model.setNumRows(0);
+
+            // Inserir os dados na Jtable
+            for (FuncionarioDTO funcionario : funcionarios) {
+                Object[] rowData = {
+                    funcionario.getId(), funcionario.getNome(), funcionario.getCpf(), funcionario.getEmail(),  funcionario.getTelefone(), funcionario.getCargo(), funcionario.getTurno()};
+                model.addRow(rowData);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os dados" + e.getMessage());
+        }
+
+    }
+
+    private void carregarCampos() {
+        int setar = tbDados.getSelectedRow();
+
+        txtNome.setText(tbDados.getModel().getValueAt(setar, 1).toString());
+        txtCPF.setText(tbDados.getModel().getValueAt(setar, 2).toString());
+        txtEmail.setText(tbDados.getModel().getValueAt(setar, 3).toString());
+        txtTelefone.setText(tbDados.getModel().getValueAt(setar, 4).toString());
+        txtCargo.setText(tbDados.getModel().getValueAt(setar, 5).toString());
+        txtTurno.setText(tbDados.getModel().getValueAt(setar, 6).toString());
+    }
+
+    //Obter os dados atualizados e atualizar o banco de dados.
+    private void alterarFuncionario() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int id = (int) tbDados.getValueAt(selectedRow, 0);
+            String nome = txtNome.getText();
+            String cpf = txtCPF.getText();
+            String email = txtEmail.getText();
+            String telefone = txtTelefone.getText();
+            String cargo = txtCargo.getText();
+            String turno = txtTurno.getText();
+
+            try {
+                // Recebendo e convertendo os dados inseridos no formulário.
+               
+
+                // Cria um novo objeto da classe ProdutoDTO
+                FuncionarioDTO funcionarioAtualizado = new FuncionarioDTO(id,nome, cpf, email, telefone, cargo, turno);
+
+                // Inserir dados no banco através do método da Classe ProdutoDAO (adicionarProduto).
+                funcionarioDao.atualizarFuncionario(funcionarioAtualizado);
+                JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso.");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Formato inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um funcionário para atualizar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    private void excluirFuncionario() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int idfuncionarios = (int) tbDados.getValueAt(selectedRow, 0);
+            int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir este funcionário?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacao == JOptionPane.YES_OPTION) {
+                funcionarioDao.excluirFuncionario(idfuncionarios);
+                //atualizarTabela();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um funcionário para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+}
