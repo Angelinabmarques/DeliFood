@@ -1,0 +1,108 @@
+import ifsertaope.cs.crud_exemplo.dto.ClienteDTO;
+import ifsertaope.cs.crud_exemplo.factory.ConnectionFactory;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+/**
+ *
+ * @author clara
+ */
+public class ClienteDAO {
+
+    private Connection connection;
+
+    public ClienteDAO() {
+        connection = ConnectionFactory.getConnection();
+    }
+
+    // Operações do sistema (CRUD - Create (criar), Read (ler), Update (atualizar) e Delete (apagar)).
+
+    // Criar (adicionar)
+    public void adicionarCliente(ClienteDTO cliente) {
+        try {
+            String query = "INSERT INTO clientes (nome, cpf, email, telefone, endereco, cep) VALUES (?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setString(1, cliente.getNome());
+                pst.setString(2, cliente.getCpf());
+                pst.setString(3, cliente.getEmail());
+                pst.setString(4, cliente.getTelefone());
+                pst.setString(5, cliente.getEndereco());
+                pst.setString(6, cliente.getCep());
+
+                pst.executeUpdate();
+                pst.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao adicionar cliente: " + e.getMessage());
+        }
+    }
+
+    // Ler (listar)
+    public List<ClienteDTO> listarClientes() {
+        List<ClienteDTO> clientes = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM clientes";
+
+            try (Statement st = connection.createStatement()) {
+                try (ResultSet rs = st.executeQuery(query)) {
+                    while (rs.next()) {
+                        int id = rs.getInt("idclientes");
+                        String nome = rs.getString("nome");
+                        String cpf = rs.getString("cpf");
+                        String email = rs.getString("email");
+                        String telefone = rs.getString("telefone");
+                        String endereco = rs.getString("endereco");
+                        String cep = rs.getString("cep");
+
+                        ClienteDTO cliente = new ClienteDTO(id, nome, cpf, email, telefone, endereco, cep);
+                        clientes.add(cliente);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar clientes: " + e.getMessage());
+        }
+        return clientes;
+    }
+
+    // Atualizar
+    public void atualizarCliente(ClienteDTO cliente) {
+        try {
+            String query = "UPDATE clientes SET nome = ?, cpf = ?, email = ?, telefone = ?, endereco = ?, cep = ? WHERE idclientes = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, cliente.getNome());
+                ps.setString(2, cliente.getCpf());
+                ps.setString(3, cliente.getEmail());
+                ps.setString(4, cliente.getTelefone());
+                ps.setString(5, cliente.getEndereco());
+                ps.setString(6, cliente.getCep());
+                ps.setInt(7, cliente.getId());
+
+                ps.executeUpdate();
+                ps.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar cliente: " + e.getMessage());
+        }
+    }
+
+    // Excluir
+    public void excluirCliente(int idCliente) {
+        try {
+            String query = "DELETE FROM clientes WHERE idclientes = ?";
+            try (PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setInt(1, idCliente);
+                pst.executeUpdate();
+                pst.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir cliente: " + e.getMessage());
+        }
+    }
+
+    ClienteDTO buscarClientePorId(int idCliente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+}
