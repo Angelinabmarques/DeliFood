@@ -1,0 +1,97 @@
+import ifsertaope.cs.crud_exemplo.factory.ConnectionFactory;
+import ifsertaope.cs.crud_exemplo.dto.ProdutoDTO;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+ 
+public class ProdutoDAO {
+
+    private Connection connection;
+
+    public ProdutoDAO() {
+        connection = ConnectionFactory.getConnection();
+    }
+
+    
+    public void adicionarProduto(ProdutoDTO produto) {
+        try {
+            String query = "INSERT INTO produtos (nome, valor, quantidade, categoria) VALUES (?, ?, ?, ?)";
+
+            try ( PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setString(1, produto.getNome());
+                pst.setDouble(2, produto.getValor());
+                pst.setInt(3, produto.getQuantidade());
+                pst.setString(4, produto.getCategoria());
+                
+                pst.executeUpdate();
+                pst.close();
+
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao realizar operação: " + e.getMessage());
+        }
+    }
+
+    public List<ProdutoDTO> listarProdutos() {
+        List<ProdutoDTO> produtos = new ArrayList();
+
+        try {
+            String query = "SELECT * FROM produtos";
+
+            try ( Statement st = connection.createStatement()) {
+
+                try ( ResultSet rs = st.executeQuery(query)) {
+                    while (rs.next()) {
+                        int id = rs.getInt("idprodutos");
+                        String nome = rs.getString("nome");
+                        double valor = rs.getDouble("valor");
+                        int quantidade = rs.getInt("quantidade");
+                        String categoria = rs.getString("categoria");
+
+                        ProdutoDTO produto = new ProdutoDTO(id, nome, valor, quantidade, categoria);
+
+                        produtos.add(produto);
+
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao realizar operação: " + e.getMessage());
+        }
+        return produtos;
+    }
+
+    public void atualizarProduto(ProdutoDTO produto) {
+        try {
+            String query = "UPDATE produtos SET nome = ?, valor = ?, quantidade = ?, categoria = ? WHERE idprodutos = ?";
+            try ( PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, produto.getNome());
+                ps.setDouble(2, produto.getValor());
+                ps.setInt(3, produto.getQuantidade());
+                ps.setString(4, produto.getCategoria());
+                ps.setInt(5, produto.getId());
+               
+
+                ps.executeUpdate();
+                ps.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao realizar operação: " + e.getMessage());
+        }
+    }
+
+    public void excluirProduto(int idProduto) {
+        try {
+            String query = "DELETE FROM produtos WHERE idprodutos = ?";
+            try ( PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setInt(1, idProduto);
+                pst.executeUpdate();
+                pst.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao realizar operação: " + e.getMessage());
+        }
+    }
+}
