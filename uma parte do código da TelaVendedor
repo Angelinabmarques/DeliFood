@@ -1,0 +1,130 @@
+private void inserirVendedor() {
+        // Dados inseridos pelo usuário no formulário.
+        String nome = txtNome.getText();
+        String cpf = TxtCPF.getText();
+        String email = TxtEmail.getText();
+        String telefone = txtTelefone.getText();
+        String endereco = txtEndereco.getText();
+        String senha = txtSenha.getText();
+
+        try {
+            // Convertendo os dados inseridos no formulário.
+
+            // Cria um novo objeto da classe ProdutoDTO
+            VendedorDTO novoVendedor = new VendedorDTO( nome, cpf, email, telefone, endereco, senha);
+
+            // Inserir dados no banco através do método da Classe ProdutoDAO (adicionarProduto).
+            vendedorDao.adicionarVendedor(novoVendedor);
+            JOptionPane.showMessageDialog(null, "Vendedor adicionado com sucesso.");
+            limparCampos();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Formato inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    // Função para limpar os campos JTextField
+    public void limparCampos() {
+        txtNome.setText(null);
+        TxtCPF.setText(null);
+        TxtEmail.setText(null);
+        txtTelefone.setText(null);
+        txtEndereco.setText(null);
+        txtSenha.setText(null);
+        txtNome.requestFocus();
+   
+    }
+
+    // Método para listar os produtos.
+    private void listarVendedor() {
+        try {
+            List<VendedorDTO> vendedores = vendedorDao.listarVendedores();
+            DefaultTableModel model = (DefaultTableModel) tbDados.getModel();
+            model.setNumRows(0);
+
+            // Inserir os dados na Jtable
+            for (VendedorDTO vendedor : vendedores) {
+                Object[] rowData = {
+                    vendedor.getId(), vendedor.getNome(), vendedor.getCpf(), vendedor.getEmail(),  vendedor.getTelefone(), vendedor.getEndereco(), vendedor.getSenha()};
+                model.addRow(rowData);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os dados" + e.getMessage());
+        }
+
+    }
+
+    private void carregarCampos() {
+        int setar = tbDados.getSelectedRow();
+
+        txtNome.setText(tbDados.getModel().getValueAt(setar, 1).toString());
+        TxtCPF.setText(tbDados.getModel().getValueAt(setar, 2).toString());
+        TxtEmail.setText(tbDados.getModel().getValueAt(setar, 3).toString());
+        txtTelefone.setText(tbDados.getModel().getValueAt(setar, 4).toString());
+        txtEndereco.setText(tbDados.getModel().getValueAt(setar, 5).toString());
+        txtSenha.setText(tbDados.getModel().getValueAt(setar, 6).toString());
+
+    }
+
+    //Obter os dados atualizados e atualizar o banco de dados.
+    private void alterarVendedor() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int id = (int) tbDados.getValueAt(selectedRow, 0);
+            String nome = txtNome.getText();
+            String cpf = TxtCPF.getText();
+            String email = TxtEmail.getText();
+            String telefone = txtTelefone.getText();
+            String endereco = txtEndereco.getText();
+            String senha = txtSenha.getText();
+
+            try {
+                // Recebendo e convertendo os dados inseridos no formulário.
+
+                // Cria um novo objeto da classe ProdutoDTO
+                VendedorDTO vendedorAtualizado = new VendedorDTO(id, nome, cpf, email, telefone, endereco, senha);
+
+                // Inserir dados no banco através do método da Classe ProdutoDAO (adicionarProduto).
+                vendedorDao.atualizarVendedor(vendedorAtualizado);
+                JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso.");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Formato de preço inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um produto para atualizar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    private void excluirVendedor() {
+
+        int selectedRow = tbDados.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int idvendedores = (int) tbDados.getValueAt(selectedRow, 0);
+            int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir este vendedor?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacao == JOptionPane.YES_OPTION) {
+                vendedorDao.excluirVendedor(idvendedores);
+                //atualizarTabela();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um vendedor para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /*
+    private void atualizarTabela() {
+        List<Produto> produtos = produtoDao.listarProdutos();
+        tableModel.setProdutos(produtos);
+        tableModel.fireTableDataChanged();
+    }
+    */
+
+   
+}
