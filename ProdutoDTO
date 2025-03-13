@@ -1,0 +1,91 @@
+public class ProdutoDTO {
+
+    private int id;
+    private String nome;
+    private double valor;
+    private int quantidade;
+    private String categoria;
+
+
+    public ProdutoDTO(int id, String nome, double valor, int quantidade, String categoria) {
+        this.id = id;
+        this.nome = nome;
+        this.valor= valor;
+        this.quantidade = quantidade;
+        this.categoria = categoria;
+    }
+
+    public ProdutoDTO(String nome, double valor, int quantidade, String categoria) {
+        this.nome = nome;
+        this.valor = valor;
+        this.quantidade = quantidade;
+        this.categoria = categoria;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+    
+    public String getCategoria() {
+    return categoria;
+}
+
+public void setCategoria(String categoria) {
+    this.categoria = categoria;
+}
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProdutoDTO other = (ProdutoDTO) obj;
+        return this.id == other.id;
+    }
+
+    
+
+   
+
+}
